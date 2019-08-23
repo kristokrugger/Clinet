@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+			<div class="row main">
+                <div class="d-flex justify-content-center align-items-center container ">
+					<form method="post">
+
+                        {{ form.hidden_tag() }}
+
+						<div class="form-group">
+							{{ form.first_name.label }} :
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									{{ form.first_name(placeholder="Enter your First Name") }}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form.last_name.label }} :
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									{{ form.last_name(placeholder="Enter your Last Name") }}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form.email.label }} :
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									{{ form.email(placeholder="Enter your Email") }}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form.password.label }} :
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									{{ form.password(placeholder="Enter your Password") }}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							{{ form.password_confirm.label }} :
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									{{ form.password_confirm(placeholder="Confirm your Password") }}
+								</div>
+							</div>
+						</div>
+
+                        {% block morefields %}
+                        <!--For extra fields depending on the type of registration-->
+                        {% endblock morefields %}
+
+						<div class="form-group ">
+							{{ form.submit(class="btn btn-primary btn-lg btn-info") }}
+						</div>
+
+					</form>
+                </div>
+			</div>
+
+</div>
+
+{% endblock content %}
+
+

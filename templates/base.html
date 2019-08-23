@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>Clinet</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    {% block scripts %}
+    <!--Extra scripts can go here in child templates-->
+    {% endblock %}
+    {% block style %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    body {
+        background-image: url("{{ url_for('static', filename='images/bg.jpg') }}");
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    </style>
+    {% endblock style %}
+    {% endblock head %}
+</head>
+
+<body>
+<div class="container">
+
+    {% include "navigation_bar.html" %}
+
+    <div class="container">
+    <!--
+    Display messages that were created with flask.flash() at the top of the user's screen.
+        E.g., "Successful login, welcome!"
+    -->
+
+      {% for category, message in get_flashed_messages(with_categories=true)  %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" class="fade close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{message}}
+          </div>
+      {% endfor %}
+
+    </div>
+
+    <br>
+
+    {% block content %}{% endblock content %}
+
+    <br>
+
+    {% block footer %}
+    <nav class="navbar sticky-bottom navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <h6><font color="gray">Tel. (604) 712-5920 Fax. (604) 421-0392</font></h6>
+    </nav>
+    {% endblock footer %}
+
+</div>
+</body>
+</html>

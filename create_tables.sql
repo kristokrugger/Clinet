@@ -1,0 +1,150 @@
+
+CREATE TABLE Technician(
+technician_id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name VARCHAR(50),
+last_name VARCHAR(50),
+email VARCHAR(100) UNIQUE,
+password VARCHAR(20)
+);
+
+CREATE TABLE Doctor(
+doctor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name VARCHAR(50),
+last_name VARCHAR(50),
+email VARCHAR(100) UNIQUE,
+password VARCHAR(20),
+license_number VARCHAR(20) UNIQUE
+);
+
+CREATE TABLE Receptionist(
+receptionist_id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name VARCHAR(50),
+last_name VARCHAR(50),
+email VARCHAR(100) UNIQUE,
+password VARCHAR(20)
+);
+
+CREATE TABLE Patient(
+patient_id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name VARCHAR(50),
+last_name VARCHAR(50),
+age INT,
+gender VARCHAR(10),
+telephone_num BIGINT,
+email VARCHAR(100) UNIQUE,
+password VARCHAR(20),
+blood_type VARCHAR(10)
+);
+
+CREATE TABLE Equipment(
+equipment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+name VARCHAR(50),
+description VARCHAR(50),
+status VARCHAR(20),
+producer VARCHAR(50),
+age INT
+);
+
+CREATE TABLE ManagesEquipment(
+equipment_id INT,
+technician_id INT,
+PRIMARY KEY(equipment_id, technician_id) ,
+FOREIGN KEY(equipment_id) REFERENCES Equipment
+ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY(technician_id) REFERENCES Technician
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE MedicalRecord(
+medrecord_id INTEGER PRIMARY KEY AUTOINCREMENT,
+notes VARCHAR(500),
+patient_id INT NOT NULL,
+FOREIGN KEY(patient_id) REFERENCES Patient
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE LabResult(
+labresult_id INTEGER PRIMARY KEY AUTOINCREMENT,
+comments VARCHAR(500),
+medrecord_id INT NOT NULL,
+FOREIGN KEY(medrecord_id) REFERENCES MedicalRecord
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE LabTest(
+labtest_id INTEGER PRIMARY KEY AUTOINCREMENT,
+test_name VARCHAR(100),
+labresult_id INT NOT NULL,
+outcome VARCHAR(20),
+isSuccessful INT,
+dateCollected TIMESTAMP,
+dateCompleted TIMESTAMP,
+FOREIGN KEY(labresult_id) REFERENCES LabResults
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE Visit(
+visit_id INTEGER PRIMARY KEY AUTOINCREMENT,
+date TIMESTAMP,
+diagnosis VARCHAR(500),
+duration INT,
+patient_id INT NOT NULL,
+doctor_id INT NOT NULL,
+medrecord_id INT,
+FOREIGN KEY(patient_id) REFERENCES Patient
+ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY(doctor_id) REFERENCES Doctor
+ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY(medrecord_id) REFERENCES MedicalRecord
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE AppointmentBooking(
+appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+date TIMESTAMP NOT NULL,
+reason VARCHAR(100),
+doctor_name VARCHAR(100),
+receptionist_id INT,
+patient_id INT NOT NULL,
+FOREIGN KEY(receptionist_id) REFERENCES Receptionist
+ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY(patient_id) REFERENCES Patient
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE Prescription(
+prescription_id INTEGER PRIMARY KEY AUTOINCREMENT,
+date TIMESTAMP,
+patient_id NOT NULL,
+doctor_id NOT NULL,
+medrecord_id NOT NULL,
+FOREIGN KEY(patient_id) REFERENCES Patient
+ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY(doctor_id) REFERENCES Doctor
+ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY(medrecord_id) REFERENCES MedicalRecord
+ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE Drug(
+drug_id INTEGER PRIMARY KEY AUTOINCREMENT,
+drug_name VARCHAR(100),
+brand VARCHAR(100),
+unit_price REAL
+);
+
+
+CREATE TABLE PrescriptionSpecifies(
+prescription_id INT,
+drug_id INT,
+dose REAL,
+quantity INT,
+FOREIGN KEY(prescription_id) REFERENCES Prescription
+ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY(drug_id) REFERENCES Drug
+ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE VIEW PatientView AS SELECT patient_id, first_name, last_name, age, gender,
+telephone_num, email, blood_type FROM Patient;
+
